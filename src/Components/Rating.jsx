@@ -1,12 +1,10 @@
 function Rating({ rating }) {
-  let color = "bg-[#546B41]";
+  let color = "bg-red-500";
 
   if (rating >= 8) {
-    color = "bg-[#546B41]";
+    color = "bg-green-500";
   } else if (rating >= 5) {
-    color = "bg-[#99AD7A]";
-  } else {
-    color = "bg-[#DCCCAC] border border-[#546B41] text-[#546B41]";
+    color = "bg-amber-500";
   }
 
   return (

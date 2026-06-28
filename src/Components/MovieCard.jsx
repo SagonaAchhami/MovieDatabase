@@ -6,17 +6,14 @@ import Rating from "./Rating";
 
 function MovieCard({ title, genre, year, rating }) {
   return (
-    <div className="bg-[#DCCCAC] rounded-xl shadow-lg p-5 hover:scale-105 transition">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       <Poster />
 
-      <div className="mt-4">
+      <div className="p-4">
+        <Rating rating={rating} />
         <MovieTitle title={title} />
         <Genre genre={genre} />
         <Year year={year} />
-
-        <div className="mt-3">
-          <Rating rating={rating} />
-        </div>
       </div>
     </div>
   );

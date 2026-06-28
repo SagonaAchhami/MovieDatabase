@@ -3,39 +3,39 @@ import MovieCard from "./MovieCard";
 function MovieGrid() {
   const movies = [
     {
-      title: "Inception",
-      genre: "Sci-Fi",
-      year: 2010,
-      rating: 8.8,
-    },
-    {
-      title: "Avatar",
-      genre: "Adventure",
-      year: 2009,
-      rating: 7.9,
-    },
-    {
-      title: "Titanic",
-      genre: "Romance",
-      year: 1997,
-      rating: 7.8,
-    },
-    {
-      title: "The Room",
-      genre: "Drama",
-      year: 2003,
-      rating: 3.7,
-    },
-    {
-      title: "Interstellar",
-      genre: "Sci-Fi",
-      year: 2014,
-      rating: 8.7,
-    },
+  title: "Harry Potter",
+  genre: "Fantasy",
+  year: 2001,
+  rating: 7.6,
+},
+{
+  title: "Toy Story 5",
+  genre: "Animation",
+  year: 2026,
+  rating: 7.2,
+},
+{
+  title: "Project Hail Mary",
+  genre: "Sci-Fi",
+  year: 2026,
+  rating: 7.7,
+},
+{
+  title: "Elio",
+  genre: "Animation",
+  year: 2025,
+  rating: 9.0
+},
+{
+  title: "The Last Whale Singer",
+  genre: "Animation",
+  year: 2025,
+  rating: 6.0,
+},
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
       {movies.map((movie, index) => (
         <MovieCard
           key={index}
