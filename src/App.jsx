@@ -1,7 +1,7 @@
 import Navbar from "./Components/Navbar";
 import MovieGrid from "./Components/MovieGrid";
 
-export function App() {
+function App() {
   return (
     <div>
       <Navbar />
