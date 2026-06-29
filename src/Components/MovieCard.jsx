@@ -3,7 +3,7 @@ import MovieTitle from "./MovieTitle";
 import Genre from "./Genre";
 import Year from "./Year";
 import Rating from "./Rating";
-
+import Button from "./Button";
 function MovieCard({ title, genre, year, rating }) {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -14,6 +14,11 @@ function MovieCard({ title, genre, year, rating }) {
         <MovieTitle title={title} />
         <Genre genre={genre} />
         <Year year={year} />
+
+           <Button
+          data="Add New Movie"
+          onClick={() => console.log("Button clicked")}
+        />
       </div>
     </div>
   );
