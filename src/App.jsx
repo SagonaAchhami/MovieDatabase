@@ -1,20 +1,57 @@
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import MovieGrid from "./Components/MovieGrid";
+import AddMovie from "./Components/AddMovie";
 
-function App() {
+export default function App() {
+  const [movies, setMovies] = useState([
+    {
+      title: "Harry Potter",
+      genre: "Fantasy",
+      year: 2001,
+      rating: 7.6,
+    },
+    {
+      title: "Toy Story 5",
+      genre: "Animation",
+      year: 2026,
+      rating: 7.2,
+    },
+    {
+      title: "Project Hail Mary",
+      genre: "Sci-Fi",
+      year: 2026,
+      rating: 7.7,
+    },
+    {
+      title: "Elio",
+      genre: "Animation",
+      year: 2025,
+      rating: 9.0,
+    },
+    {
+      title: "The Last Whale Singer",
+      genre: "Animation",
+      year: 2025,
+      rating: 6.0,
+    },
+  ]);
+
+  const addMovie = (movie) => {
+    setMovies((prev) => [...prev, movie]);
+  };
+
   return (
-    <div className="min-h-screen bg-[#DCCCAC]">
-      <Navbar />
+    <BrowserRouter>
+      <div className="min-h-screen bg-[#DCCCAC]">
+        <Navbar />
 
-      <div className="max-w-7xl mx-auto py-8 px-6">
-        <h2 className="text-3xl font-bold text-center text-[#546B41] mb-10">
-  Featured Movies
-</h2>
-
-        <MovieGrid />
+        <Routes>
+          <Route path="/" element={<MovieGrid movies={movies} />} />
+          <Route path="/add" element={<AddMovie onAddMovie={addMovie} />} />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
-
-export default App;

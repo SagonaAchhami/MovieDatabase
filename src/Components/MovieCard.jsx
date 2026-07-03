@@ -15,10 +15,7 @@ function MovieCard({ title, genre, year, rating }) {
         <Genre genre={genre} />
         <Year year={year} />
 
-           <Button
-          data="Add New Movie"
-          onClick={() => console.log("Button clicked")}
-        />
+          
       </div>
     </div>
   );
