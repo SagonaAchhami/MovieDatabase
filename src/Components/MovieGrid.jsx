@@ -7,15 +7,27 @@ export default function MovieGrid({
   selectedMovie,
   watchlist,
   toggleWatchlist,
+  search,
+  setSearch,
 }) {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-6">
-      <h2 className="text-3xl font-bold text-center text-[#546B41] mb-8">
-        Featured Movies
-      </h2>
+   
 
+      {/* SEARCH BAR */}
+      <div className="flex justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-md p-3 border rounded-lg"
+        />
+      </div>
+
+      {/* ADD MOVIE BUTTON */}
       <div className="flex justify-center mb-6">
         <button
           onClick={() => navigate("/add")}
@@ -25,16 +37,18 @@ export default function MovieGrid({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* FIXED HEIGHT GRID WRAPPER */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
         {movies.map((movie) => (
-          <MovieCard
-            key={movie.title}
-            movie={movie}
-            onSelectMovie={onSelectMovie}
-            selectedMovie={selectedMovie}
-            watchlist={watchlist}
-            toggleWatchlist={toggleWatchlist}
-          />
+          <div key={movie.title} className="h-full">
+            <MovieCard
+              movie={movie}
+              onSelectMovie={onSelectMovie}
+              selectedMovie={selectedMovie}
+              watchlist={watchlist}
+              toggleWatchlist={toggleWatchlist}
+            />
+          </div>
         ))}
       </div>
     </div>
