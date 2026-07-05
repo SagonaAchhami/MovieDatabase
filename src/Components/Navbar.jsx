@@ -1,19 +1,17 @@
-function Navbar() {
-  return (
-    <nav className="bg-[#546B41] text-[#DCCCAC] shadow-md">
-      {/* Title */}
-      <div className="py-6 text-center border-b border-[#99AD7A]">
-        <h1 className="text-4xl font-bold">🎬 Movie Database</h1>
-      </div>
+import { Link } from "react-router-dom";
 
-      {/* Navigation */}
-      <div className="flex justify-center gap-12 py-4 font-semibold text-lg hover:text-[#99AD7A] transition">
-        <a href="#">Browse</a>
-        <a href="#" >Watchlist</a>
-        <a href="#" >Add Movie</a>
+export default function Navbar() {
+  return (
+    <nav className="bg-[#546B41] text-white py-6 text-center">
+      <h1 className="text-3xl font-bold mb-3">
+        🎬 Movie Database
+      </h1>
+
+      <div className="flex justify-center gap-8">
+        <Link to="/">Home</Link>
+        <Link to="/">Browse</Link>
+        <Link to="/add">Add Movie</Link>
       </div>
     </nav>
   );
 }
-
-export default Navbar;
