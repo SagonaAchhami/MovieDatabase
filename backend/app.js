@@ -1,24 +1,17 @@
-import express from "express"
-import movies from "./data/movie.js";
-const app = express()
+import express from "express";
+import router from "./src/routes/movieRoute.js";
 
-app.use(express.json())
+const app = express();
 
-const PORT = 3001
+const PORT = 3001;
 
-app.get("/movies",(req,res)=>{
-    return res.json(movies)
-})
 
-app.post("/movies",(req,res)=>{
-    const movie = req.body
-    movies.push(movie)
+app.use(express.json());
 
-    return res.status(201).json({"message":"Movie added successfully"})
 
-})
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`)
+app.use("/", router);
 
-    
-})
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
