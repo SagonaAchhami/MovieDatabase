@@ -1,6 +1,12 @@
+import mongoose from 'mongoose'
+import movie from './movie.js'
+import dotenv from 'dotenv'
+
+dotenv.config({
+  path:'./.env',
+})
 const movies = [
   {
-    id: 1,
     title: "Harry Potter",
     genre: "Fantasy",
     year: 2001,
@@ -10,7 +16,6 @@ const movies = [
     cast: ["Daniel Radcliffe"],
   },
   {
-    id: 2,
     title: "Toy Story 5",
     genre: "Animation",
     year: 2026,
@@ -20,7 +25,6 @@ const movies = [
     cast: ["Tom Hanks"],
   },
   {
-    id: 3,
     title: "Project Hail Mary",
     genre: "Sci-Fi",
     year: 2026,
@@ -30,7 +34,6 @@ const movies = [
     cast: ["Ryan Gosling"],
   },
   {
-    id: 4,
     title: "Elio",
     genre: "Animation",
     year: 2025,
@@ -41,4 +44,7 @@ const movies = [
   },
 ];
 
+const connection = mongoose.connect(process.env.MONGODB_URL)
+await movie.deleteMany({})
+await movie.insertMany(movies)
 export default movies;
