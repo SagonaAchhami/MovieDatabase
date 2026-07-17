@@ -45,6 +45,7 @@ const movies = [
 ];
 
 const connection = mongoose.connect(process.env.MONGODB_URL)
+await dbConnection()
 await movie.deleteMany({})
 await movie.insertMany(movies)
 export default movies;
