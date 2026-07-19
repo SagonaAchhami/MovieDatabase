@@ -1,7 +1,7 @@
 import * as MovieModel from "../models/movieModel.js";
 
 export async function getMovies(req, res) {
-  const movies = await MovieModel.getAll();
+  const movies = await MovieModel.getAll(req.query);
   return res.status(200).json(movies);
 }
 
