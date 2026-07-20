@@ -37,6 +37,9 @@ const movieSchema = mongoose.Schema({
     type: [String], // Array of cast members
     required: true,
   },
+   poster: {
+    type: String,
+},
 });
 const movie = mongoose.model('Movie',movieSchema,'movies')
 

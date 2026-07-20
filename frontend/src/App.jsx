@@ -4,28 +4,49 @@ import Navbar from "./Components/Navbar";
 import MovieGrid from "./Components/MovieGrid";
 import AddMovie from "./Components/AddMovie";
 import MovieCard from "./Components/MovieCard";
+import { getMovies, addMovie as addMovieAPI } from "./api/movieApi.js";
 
 export default function App() {
-  const [movies, setMovies] = useState([
-    { title: "Harry Potter", genre: "Fantasy", year: 2001, rating: 7.6, director: "Chris Columbus", synopsis: "Wizard discovers Hogwarts magic", cast: ["Daniel Radcliffe"] },
-    { title: "Toy Story 5", genre: "Animation", year: 2026, rating: 7.2, director: "Andrew Stanton", synopsis: "Toys return adventure", cast: ["Tom Hanks"] },
-    { title: "Project Hail Mary", genre: "Sci-Fi", year: 2026, rating: 7.7, director: "Phil Lord", synopsis: "Astronaut saves Earth", cast: ["Ryan Gosling"] },
-    { title: "Elio", genre: "Animation", year: 2025, rating: 9.0, director: "Adrian Molina", synopsis: "Boy becomes ambassador", cast: ["Yonas Kibreab"] },
-  ]);
+  const [movies, setMovies] = useState([]);
 
   const [watchlist, setWatchlist] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  const [errors, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [search, setSearch] = useState("");
   const [totalMovies, setTotalMovies] = useState(0);
   const [avgRating, setAvgRating] = useState(0);
 
-  const addMovie = (movie) => {
-    setMovies((prev) => [...prev, movie]);
+  useEffect(() => {
+    async function loadMovies() {
+      try {
+        const response = await getMovies();
+        setMovies(response.data);
+      } catch (error) {
+        setErrors((prev) => [...prev, error]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadMovies();
+  }, []);
+
+  const addMovie = async (movie) => {
+    try {
+      const response = await addMovieAPI(movie);
+
+      setMovies((prev) => [...prev, response.data]);
+    } catch (error) {
+      setErrors((prev) => [...prev, error]);
+    }
   };
 
   const toggleWatchlist = (movie) => {
     const exists = watchlist.find((m) => m.title === movie.title);
+
     setWatchlist(
       exists
         ? watchlist.filter((m) => m.title !== movie.title)
@@ -35,13 +56,24 @@ export default function App() {
 
   useEffect(() => {
     setTotalMovies(movies.length);
-    const avg = movies.reduce((sum, m) => sum + m.rating, 0) / movies.length;
-    setAvgRating(avg.toFixed(1));
+
+    if (movies.length > 0) {
+      const avg =
+        movies.reduce((sum, m) => sum + m.rating, 0) / movies.length;
+
+      setAvgRating(avg.toFixed(1));
+    } else {
+      setAvgRating(0);
+    }
   }, [movies]);
 
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading movies...</p>;
+  }
 
   return (
     <BrowserRouter>
@@ -51,6 +83,12 @@ export default function App() {
         <div className="text-center py-4 font-semibold">
           Total Movies: {totalMovies} | Avg Rating: {avgRating}
         </div>
+
+        {errors.length > 0 && (
+          <p className="text-center text-red-600">
+            Failed to load movies
+          </p>
+        )}
 
         <Routes>
 
@@ -73,10 +111,12 @@ export default function App() {
           {/* ADD */}
           <Route
             path="/add"
-            element={<AddMovie onAddMovie={addMovie} />}
+            element={
+              <AddMovie onAddMovie={addMovie} />
+            }
           />
 
-          {/*  WATCHLIST */}
+          {/* WATCHLIST */}
           <Route
             path="/watchlist"
             element={
@@ -86,12 +126,14 @@ export default function App() {
                 </h2>
 
                 {watchlist.length === 0 ? (
-                  <p className="text-center">No movies in watchlist</p>
+                  <p className="text-center">
+                    No movies in watchlist
+                  </p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {watchlist.map((movie) => (
                       <MovieCard
-                        key={movie.title}
+                        key={movie._id || movie.title}
                         movie={movie}
                         onSelectMovie={setSelectedMovie}
                         selectedMovie={selectedMovie}

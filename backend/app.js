@@ -1,23 +1,25 @@
 import express from "express";
-import router from "./src/routes/movieRoute.js";
-import dotenv from 'dotenv';
-import cors from 'cors';
-import dbConnection from './src/config/db.js'
+import dotenv from "dotenv";
+import cors from "cors";
+
+import movieRoute from "./src/routes/movieRoute.js";
+import authRoute from "./src/routes/authRoute.js";
+import dbConnection from "./src/config/db.js";
+
+dotenv.config();
 
 const app = express();
-dotenv.config()
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
-app.use(cors())
 
+app.use("/", movieRoute);
+app.use("/", authRoute);
 
-app.use("/", router);
+await dbConnection();
 
-await dbConnection()
-
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
