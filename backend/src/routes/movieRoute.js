@@ -1,16 +1,17 @@
 import { Router } from "express";
 import * as movieController from "../controllers/movieController.js";
 import {movieRules, handleMovieValidation} from '../validators/movieValidator.js'
+import authenticate from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/movies", movieController.getMovies);
-router.get("/movies/:id", movieController.getMovieById);
+router.get("/", movieController.getMovies);
+router.get("/:id",  movieController.getMovieById);
 
-router.post("/movies",movieRules,handleMovieValidation, movieController.addMovie);
+router.post("/", authenticate,movieRules,handleMovieValidation, movieController.addMovie);
 
-router.put("/movies/:id", movieController.updateMovie);
+router.put("/:id",authenticate, movieController.updateMovie);
 
-router.delete("/movies/:id", movieController.deleteMovie);
+router.delete("/:id", authenticate, movieController.deleteMovie);
 
 export default router;

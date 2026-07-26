@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use("/", movieRoute);
-app.use("/", authRoute);
+app.use("/movies", movieRoute);
+app.use("/auth", authRoute);
 
 await dbConnection();
 

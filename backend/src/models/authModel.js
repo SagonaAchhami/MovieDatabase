@@ -1,23 +1,18 @@
-import bcrypt from "bcryptjs";
-import user from "../../data/user.js";
+import bcrypt from 'bcrypt'
+import User from '../../data/user.js'
 
-export async function register(userDetails) {
-  return await user.create(userDetails);
-}
-
-export async function login(userDetails) {
-  const existingUser = await user.findOne({
-    email: userDetails.email,
+export async function register(email, password) {
+  return User.create({
+    email,
+    password,
   });
-
-  if (!existingUser) {
-    return null;
+}
+export async function login({ email, password }) {
+  const user = await User.findOne({ email })
+  console.log(user.password)
+  if (!user) {
+    throw new Error('User not found')
   }
-
-  const isValid = await bcrypt.compare(
-    userDetails.password,
-    existingUser.password
-  );
-
-  return isValid ? existingUser : null;
+  const isValid = await bcrypt.compare(password, user.password)
+  return isValid ? user : null
 }
