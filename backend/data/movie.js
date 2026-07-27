@@ -1,7 +1,38 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
+
+const reviewSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
+    },
+
+    comment: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    _id: false,
+  }
+);
 
 const movieSchema = mongoose.Schema({
-     title: {
+  title: {
     type: String,
     required: true,
     trim: true,
@@ -23,6 +54,11 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
 
+  avgRating: {
+    type: Number,
+    default: 0,
+  },
+
   director: {
     type: String,
     required: true,
@@ -34,13 +70,17 @@ const movieSchema = mongoose.Schema({
   },
 
   cast: {
-    type: [String], // Array of cast members
+    type: [String],
     required: true,
   },
-   poster: {
-    type: String,
-},
-});
-const movie = mongoose.model('Movie',movieSchema,'movies')
 
-export default movie
+  poster: {
+    type: String,
+  },
+
+  reviews: [reviewSchema],
+});
+
+const movie = mongoose.model("Movie", movieSchema, "movies");
+
+export default movie;

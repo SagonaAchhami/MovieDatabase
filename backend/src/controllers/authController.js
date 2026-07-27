@@ -1,6 +1,12 @@
 import * as AuthModel from "../models/authModel.js";
 import { generateToken } from "../utils/auth.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+};
 
 export async function registerUser(req, res) {
   try {
@@ -15,6 +21,7 @@ export async function registerUser(req, res) {
     }
 
     const token = generateToken(user);
+    res.cookie("jwt-token", token, cookieOptions);
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -23,18 +30,14 @@ export async function registerUser(req, res) {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token,
       },
     });
-
   } catch (error) {
     return res.status(500).json({
       error: error.message,
     });
   }
 }
-
-
 
 export async function loginUser(req, res) {
   try {
@@ -45,8 +48,8 @@ export async function loginUser(req, res) {
         message: "User login failed",
       });
     }
-
     const token = generateToken(user);
+    res.cookie("jwt-token", token, cookieOptions);
 
     return res.status(200).json({
       message: "User logged in successfully",
@@ -55,13 +58,19 @@ export async function loginUser(req, res) {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token,
       },
     });
-
   } catch (error) {
     return res.status(500).json({
       error: error.message,
     });
   }
+}
+
+export function logoutUser(req, res) {
+  res.clearCookie("jwt-token", cookieOptions);
+
+  return res.status(200).json({
+    message: "User logged out successfully",
+  });
 }

@@ -38,3 +38,75 @@ export async function deleteMovie(req, res) {
 
   return res.status(200).json({ message: "Movie deleted successfully" });
 }
+
+
+export async function postReview(req, res) {
+  try {
+    const { rating, comment } = req.body;
+
+    const updatedMovie = await MovieModel.addReview(
+      req.params.id,
+      req.user.userId,
+      {
+        rating,
+        comment,
+      }
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({
+        error: "Movie not found",
+      });
+    }
+
+    return res.status(201).json(updatedMovie);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+
+
+export async function getWatchlist(req, res) {
+  try {
+    const user = await MovieModel.getWatchlist(req.user.userId);
+
+    return res.status(200).json(user.watchlist);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+export async function addWatchlist(req, res) {
+  try {
+    const user = await MovieModel.addToWatchlist(
+      req.user.userId,
+      req.params.id
+    );
+
+    return res.status(200).json(user.watchlist);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+export async function removeWatchlist(req, res) {
+  try {
+    const user = await MovieModel.removeFromWatchlist(
+      req.user.userId,
+      req.params.id
+    );
+
+    return res.status(200).json(user.watchlist);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+}

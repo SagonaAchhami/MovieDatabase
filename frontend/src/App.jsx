@@ -5,19 +5,19 @@ import MovieGrid from "./Components/MovieGrid";
 import AddMovie from "./Components/AddMovie";
 import MovieCard from "./Components/MovieCard";
 import { getMovies, addMovie as addMovieAPI } from "./api/movieApi.js";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-
   const [watchlist, setWatchlist] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [search, setSearch] = useState("");
   const [totalMovies, setTotalMovies] = useState(0);
   const [avgRating, setAvgRating] = useState(0);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
     async function loadMovies() {
@@ -37,7 +37,6 @@ export default function App() {
   const addMovie = async (movie) => {
     try {
       const response = await addMovieAPI(movie);
-
       setMovies((prev) => [...prev, response.data]);
     } catch (error) {
       setErrors((prev) => [...prev, error]);
@@ -57,19 +56,28 @@ export default function App() {
   useEffect(() => {
     setTotalMovies(movies.length);
 
-    if (movies.length > 0) {
-      const avg =
-        movies.reduce((sum, m) => sum + m.rating, 0) / movies.length;
+    const avg = movies.length
+      ? (
+          movies.reduce((sum, m) => sum + m.rating, 0) / movies.length
+        ).toFixed(1)
+      : 0;
 
-      setAvgRating(avg.toFixed(1));
-    } else {
-      setAvgRating(0);
-    }
+    setAvgRating(avg);
   }, [movies]);
 
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleLogin = ({ token }) => {
+    localStorage.setItem("token", token);
+    setToken(token);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
 
   if (isLoading) {
     return <p className="text-center mt-10">Loading movies...</p>;
@@ -80,9 +88,16 @@ export default function App() {
       <div className="min-h-screen bg-[#DCCCAC]">
         <Navbar />
 
-        <div className="text-center py-4 font-semibold">
-          Total Movies: {totalMovies} | Avg Rating: {avgRating}
-        </div>
+        {token && (
+          <div className="text-center mb-4">
+            <button
+              onClick={logout}
+              className="bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Logout
+            </button>
+          </div>
+        )}
 
         {errors.length > 0 && (
           <p className="text-center text-red-600">
@@ -91,8 +106,6 @@ export default function App() {
         )}
 
         <Routes>
-
-          {/* BROWSE */}
           <Route
             path="/"
             element={
@@ -104,19 +117,17 @@ export default function App() {
                 toggleWatchlist={toggleWatchlist}
                 search={search}
                 setSearch={setSearch}
+                totalMovies={totalMovies}
+                avgRating={avgRating}
               />
             }
           />
 
-          {/* ADD */}
           <Route
             path="/add"
-            element={
-              <AddMovie onAddMovie={addMovie} />
-            }
+            element={<AddMovie onAddMovie={addMovie} />}
           />
 
-          {/* WATCHLIST */}
           <Route
             path="/watchlist"
             element={
@@ -126,9 +137,7 @@ export default function App() {
                 </h2>
 
                 {watchlist.length === 0 ? (
-                  <p className="text-center">
-                    No movies in watchlist
-                  </p>
+                  <p className="text-center">No movies in watchlist</p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {watchlist.map((movie) => (
@@ -147,6 +156,15 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/login"
+            element={<Login onLogin={handleLogin} />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

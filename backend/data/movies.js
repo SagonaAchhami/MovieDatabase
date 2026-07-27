@@ -42,7 +42,7 @@ const movies = [
       "Tony Hale",
     ],
     poster:
-      "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8pbT-aRSdpfBnP3bdUNR8xiweOBdw_fR58mf7GZQpzGjFqOqwN24WWNk&s=10",
   },
   {
     title: "Project Hail Mary",
@@ -60,7 +60,7 @@ const movies = [
       "Ken Leung",
     ],
     poster:
-      "https://image.tmdb.org/t/p/w500/5Q7QK7xk4vFQ8zqjJ5pFq7x3q8s.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpnUPduv_JGn6UqsbZtB2XkNPqz2XaEMOkUETWComi8g&s",
   },
   {
     title: "Elio",
@@ -78,7 +78,7 @@ const movies = [
       "Remy Edgerly",
     ],
     poster:
-      "https://image.tmdb.org/t/p/w500/2aD4u6xW2zYk7q3Fqzq0z8y4w8m.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGBGSPQ_DUiWfivjsYXXAIFlI8IeAkdfHWsBn6kyXUJZQ_zuOlHMjCf7o&s=10",
   },
 ];
 

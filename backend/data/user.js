@@ -22,13 +22,18 @@ const userSchema = new mongoose.Schema(
     isAdmin: {
       type: Boolean,
       default: false,
-    },
+    },  
+    watchlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Movie",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
-
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import Poster from "./Poster";
 import MovieTitle from "./MovieTitle";
 import Genre from "./Genre";
 import Year from "./Year";
 import Rating from "./Rating";
+import { postReview } from "../api/movieApi";
 
 export default function MovieCard({
   movie,
@@ -14,12 +16,33 @@ export default function MovieCard({
   const isSelected = selectedMovie?.title === movie.title;
   const saved = watchlist.some((m) => m.title === movie.title);
 
+  const [rating, setRating] = useState("");
+  const [comment, setComment] = useState("");
+
+  async function submitReview(e) {
+    e.preventDefault();
+
+    try {
+      await postReview(movie._id, {
+        rating: Number(rating),
+        comment,
+      });
+
+      alert("Review added!");
+
+      setRating("");
+      setComment("");
+    } catch (err) {
+      alert("Please login first.");
+    }
+  }
+
   return (
     <div
       onClick={() => onSelectMovie(movie)}
       className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer"
     >
-      <Poster />
+      <Poster poster={movie.poster} title={movie.title} />
 
       <div className="p-4">
         <Rating rating={movie.rating} />
@@ -36,25 +59,6 @@ export default function MovieCard({
         >
           {saved ? "Remove Watchlist" : "Add Watchlist"}
         </button>
-
-        {isSelected && (
-          <div className="mt-4 border-t pt-4 text-gray-700">
-            <p>
-              <strong>Director:</strong> {movie.director}
-            </p>
-
-            <p className="mt-2">{movie.synopsis}</p>
-
-            <div className="mt-2">
-              <strong>Cast:</strong>
-              <ul className="list-disc ml-6">
-                {movie.cast?.map((actor, i) => (
-                  <li key={i}>{actor}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
