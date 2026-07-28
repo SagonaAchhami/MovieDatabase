@@ -1,66 +1,108 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../api/movieApi";
+import { useState } from 'react'
+import { loginUser } from '../api/authApi.js'
+import { useNavigate } from 'react-router-dom'
 
-export default function Login({ onLogin }) {
-  const navigate = useNavigate();
+export default function Login() {
+  const navigate = useNavigate()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userInfo, setuserInfo] = useState({})
+  const [errors, setErrors] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  async function handleLogin(e) {
+    e.preventDefault()
     try {
-      const response = await login({
-        email,
-        password,
-      });
-
-      onLogin(response.data.data);
-
-      alert("Login Successful");
-
-      navigate("/");
+      setIsLoading(true)
+      const response = await loginUser(userInfo)
+      const user = response.data.data
+      localStorage.setItem('user', JSON.stringify(user))
+      navigate('/')
     } catch (error) {
-      alert("Invalid email or password");
+      setErrors((prev) => [...prev, error])
+    } finally {
+      setIsLoading(false)
     }
   }
 
+  function handleUserInput(e) {
+    const value = e.target.value
+    setuserInfo((prev) => ({ ...prev, [e.target.name]: value }))
+  }
+
   return (
-    <div className="flex justify-center items-center py-10 px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-5"
-      >
-        <h2 className="text-3xl font-bold text-center text-green-800">
-          Login
-        </h2>
+    <main className="max-w-7xl mx-auto px-4 py-10">
+      <h2 className="text-3xl font-bold text-brand-black mb-8">Log In</h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border p-3 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+      {errors.length > 0 ? (
+        <div className="mb-4 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <p className="font-semibold">Could not log in:</p>
+          <ul className="list-disc pl-5">
+            {errors.map((err, i) => (
+              <li key={i}>{err.message}</li>
+            ))}
+          </ul>
+        </div>
+      ) : isLoading ? (
+        <p>Loggin In...</p>
+      ) : (
+        <LoginForm
+          handleLogin={handleLogin}
+          handleUserInput={handleUserInput}
         />
+      )}
+    </main>
+  )
+}
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border p-3 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+function LoginForm({ handleLogin, handleUserInput }) {
+  return (
+    <form onSubmit={handleLogin} className="px-4 mt-6">
+      <div className="space-y-4 max-w-sm mx-auto">
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-2 text-slate-900 dark:text-slate-50 font-medium text-sm inline-block"
+          >
+            Email
+          </label>
+
+          <input
+            type="email"
+            onChange={handleUserInput}
+            id="email"
+            name="email"
+            placeholder="john@readymadeui.com"
+            required
+            className="px-3 py-2.5 text-sm text-slate-900 dark:text-slate-50 rounded-md bg-white dark:bg-neutral-800 w-full outline-1 -outline-offset-1 outline-slate-300 dark:outline-neutral-700 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="password"
+            className="mb-2 text-slate-900 dark:text-slate-50 font-medium text-sm inline-block"
+          >
+            Password
+          </label>
+
+          <input
+            type="password"
+            onChange={handleUserInput}
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            className="px-3 py-2.5 text-sm text-slate-900 dark:text-slate-50 rounded-md bg-white dark:bg-neutral-800 w-full outline-1 -outline-offset-1 outline-slate-300 dark:outline-neutral-700 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
+          />
+        </div>
 
         <button
-          className="w-full bg-green-700 text-white py-3 rounded"
+          type="submit"
+          className="!mt-2 py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          Login
+          Submit
         </button>
-      </form>
-    </div>
-  );
+      </div>
+    </form>
+  )
 }

@@ -6,7 +6,7 @@ import AddMovie from "./Components/AddMovie";
 import MovieCard from "./Components/MovieCard";
 import { getMovies, addMovie as addMovieAPI } from "./api/movieApi.js";
 import Login from "./Components/Login";
-import Register from "./Components/Register";
+import Signup from "./Components/Register";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -156,15 +156,10 @@ export default function App() {
             }
           />
 
-          <Route
-            path="/login"
-            element={<Login onLogin={handleLogin} />}
-          />
+           <Route path="login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
 
-          <Route
-            path="/register"
-            element={<Register />}
-          />
+          
         </Routes>
       </div>
     </BrowserRouter>
