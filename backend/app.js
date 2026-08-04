@@ -6,6 +6,7 @@ import movieRoute from "./src/routes/movieRoute.js";
 import authRoute from "./src/routes/authRoute.js";
 import dbConnection from "./src/config/db.js";
 import cookieParse from 'cookie-parser';
+import gemaiRoute from "./src/routes/aiRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(express.json());
 app.get('/health',(req,res)=> res.status(200).json({ok:true}))
 app.use("/movies", movieRoute);
 app.use("/auth", authRoute);
+app.use("/ai", gemaiRoute);
 
 await dbConnection();
 
