@@ -25,6 +25,7 @@ app.use(cors(
 },
 ));
 app.use(express.json());
+app.get('/', (req, res) => res.status(200).json({ message: "Movie Database API is running" }));
 app.get('/health',(req,res)=> res.status(200).json({ok:true}))
 app.use("/movies", movieRoute);
 app.use("/auth", authRoute);
