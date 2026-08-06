@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const APIURL =
-  import.meta.env.APIURL || "https://moviedatabase-g0i8.onrender.com";
+  import.meta.env.VITE_APIURL || "https://moviedatabase-g0i8.onrender.com";
 
 const api = axios.create({
   baseURL: `${APIURL}/movies`,

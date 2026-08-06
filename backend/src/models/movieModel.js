@@ -79,12 +79,14 @@ export async function addToWatchlist(userId, movieId) {
 
   if (!user) return null;
 
+  user.watchlist ??= [];
+
   if (!user.watchlist.includes(movieId)) {
     user.watchlist.push(movieId);
     await user.save();
   }
 
-  return await User.findById(userId).populate("watchlist");
+  return await user.populate("watchlist");
 }
 
 export async function removeFromWatchlist(userId, movieId) {
@@ -92,11 +94,11 @@ export async function removeFromWatchlist(userId, movieId) {
 
   if (!user) return null;
 
-  user.watchlist = user.watchlist.filter(
+  user.watchlist = (user.watchlist ?? []).filter(
     (id) => id.toString() !== movieId
   );
 
   await user.save();
 
-  return await User.findById(userId).populate("watchlist");
+  return await user.populate("watchlist");
 }

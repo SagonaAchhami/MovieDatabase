@@ -1,16 +1,59 @@
-# React + Vite
+# Movie Database
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack movie database web app with user authentication, reviews, watchlists, and an **AI-powered movie recommendation assistant** that analyzes your watchlist and suggests 3 personalized picks with reasoning.
 
-Currently, two official plugins are available:
+## Live URL
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend:** https://moviedatabaseweb.netlify.app/
+- **Backend API:** https://moviedatabase-g0i8.onrender.com
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Browse the movie catalog with live search
+- Add / update / delete movies (admin)
+- View movie details: poster, genre, year, director, synopsis, cast
+- Leave ratings and reviews
+- Build a personal watchlist
+- **AI Recommendations:** one-click personalized movie picks with explanations
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React 19, Vite, Tailwind CSS v4, React Router, Axios
+- **Backend:** Node.js, Express, MongoDB, Mongoose
+- **AI:** Groq API (GPT-based model) via the OpenAI SDK
+
+## AI Recommendations
+
+1. Open the **AI Recommend** page from the navigation bar, or use the
+   **"Recommend Me Something"** button on the **Watchlist** page.
+2. The assistant analyzes your watchlist and favorite genres.
+3. Three recommended movies are displayed in a styled panel, each with the
+   reason it matches your taste.
+
+## Local Development
+
+### Backend
+
+```bash
+cd backend
+npm install
+# copy .env.example to .env and fill in the values
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs on `http://localhost:5173` and connects to the deployed
+backend by default.
+
+## Screenshots
+
+![Home Page](screenshots/home.png)
+![AI Recommendations](screenshots/ai-recommendations.png)
+![Watchlist](screenshots/watchlist.png)

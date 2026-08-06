@@ -12,6 +12,7 @@ export default function MovieCard({
   selectedMovie,
   watchlist,
   toggleWatchlist,
+  isLoggedIn,
 }) {
   const isSelected = selectedMovie?.title === movie.title;
   const saved = watchlist.some((m) => m.title === movie.title);
@@ -53,6 +54,12 @@ export default function MovieCard({
         <button
           onClick={(e) => {
             e.stopPropagation();
+
+            if (!isLoggedIn) {
+              alert("Please login first to add movies to your watchlist.");
+              return;
+            }
+
             toggleWatchlist(movie);
           }}
           className="mt-3 bg-green-700 text-white px-4 py-2 rounded"

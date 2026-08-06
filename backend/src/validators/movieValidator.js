@@ -5,10 +5,14 @@ export const movieRules=[
     body('year').notEmpty().isInt({min:4}).withMessage('Year must be a integer.'),
     body('genre').notEmpty().isString().trim().withMessage('Genre must be String.'),
 ]
-export const handleMovieValidation = (req,res,next)=>{
-    const errors = validationResult(req)
-    if(!errors.isEmpty()){
-        res.status(400).json({errors:errors.array()})
-    }
-    next()
-}
+export const handleMovieValidation = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    });
+  }
+
+  next();
+};

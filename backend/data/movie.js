@@ -39,10 +39,10 @@ const movieSchema = mongoose.Schema({
   },
 
   genre: {
-    type: String,
-    required: true,
-    enum: ["Sci-Fi", "Horror", "Animation", "Fantasy"],
-  },
+  type: String,
+  required: true,
+  trim: true,
+},
 
   year: {
     type: Number,

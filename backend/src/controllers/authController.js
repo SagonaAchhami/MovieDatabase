@@ -5,8 +5,8 @@ import { getUserById } from "../models/authModel.js";
 const cookieOptions = {
   httpOnly: true,
   maxAge: 7 * 24 * 60 * 60 * 1000,
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+  secure: true,
 };
 
 export async function registerUser(req, res) {
@@ -27,6 +27,7 @@ export async function registerUser(req, res) {
 
     return res.status(201).json({
       message: "User registered successfully",
+      token,
       data: {
         _id: user._id,
         name: user.name,
@@ -57,6 +58,7 @@ export async function loginUser(req, res) {
 
     return res.status(200).json({
       message: "User logged in successfully",
+      token,
       data: {
         _id: user._id,
         name: user.name,

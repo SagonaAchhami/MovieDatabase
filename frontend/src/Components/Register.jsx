@@ -14,7 +14,9 @@ export default function Register() {
       setIsLoading(true)
       const response = await registerUser(userInfo)
       const user = response.data.data
+      const token = response.data.token
       localStorage.setItem('user', JSON.stringify(user))
+      if (token) localStorage.setItem('token', token)
       navigate('/')
     } catch (error) {
       setErrors((prev) => [...prev, error])

@@ -13,6 +13,7 @@ export default function MovieGrid({
   setSearch,
   totalMovies,
   avgRating,
+  isLoggedIn,
 }) {
   const navigate = useNavigate();
   const [rating, setRating] = useState("");
@@ -164,6 +165,7 @@ export default function MovieGrid({
               selectedMovie={selectedMovie}
               watchlist={watchlist}
               toggleWatchlist={toggleWatchlist}
+              isLoggedIn={isLoggedIn}
             />
           </div>
         ))}

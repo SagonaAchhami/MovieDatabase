@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { loginUser } from '../api/authApi.js'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -15,7 +15,9 @@ export default function Login() {
       setIsLoading(true)
       const response = await loginUser(userInfo)
       const user = response.data.data
+      const token = response.data.token
       localStorage.setItem('user', JSON.stringify(user))
+      if (token) localStorage.setItem('token', token)
       navigate('/')
     } catch (error) {
       setErrors((prev) => [...prev, error])
@@ -50,6 +52,13 @@ export default function Login() {
           handleUserInput={handleUserInput}
         />
       )}
+
+      <p className="text-center mt-6 text-sm text-slate-600">
+        Not registered?{" "}
+        <Link to="/register" className="text-blue-600 underline font-semibold">
+          Create an account
+        </Link>
+      </p>
     </main>
   )
 }

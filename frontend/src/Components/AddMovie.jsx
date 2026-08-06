@@ -9,7 +9,19 @@ export default function AddMovie({ onAddMovie }) {
   const [year, setYear] = useState("");
   const [director, setDirector] = useState("");
   const [synopsis, setSynopsis] = useState("");
+  const [poster, setPoster] = useState("");
   const [castInput, setCastInput] = useState("");
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => setPoster(reader.result);
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,6 +32,7 @@ export default function AddMovie({ onAddMovie }) {
       year: Number(year),
       director,
       synopsis,
+      poster,
       rating: 0,
       cast: castInput.split(",").map((c) => c.trim()).filter(Boolean),
     };
@@ -31,6 +44,7 @@ export default function AddMovie({ onAddMovie }) {
     setYear("");
     setDirector("");
     setSynopsis("");
+    setPoster("");
     setCastInput("");
 
     navigate("/");
@@ -48,13 +62,29 @@ export default function AddMovie({ onAddMovie }) {
 
         <input className="w-full border p-3 rounded" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
-        <input className="w-full border p-3 rounded" placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} required />
-
+        <input className="w-full border p-3 rounded" placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} required/>
         <input type="number" className="w-full border p-3 rounded" placeholder="Year" value={year} onChange={(e) => setYear(e.target.value)} required />
 
         <input className="w-full border p-3 rounded" placeholder="Director" value={director} onChange={(e) => setDirector(e.target.value)} required />
 
         <textarea className="w-full border p-3 rounded" placeholder="Synopsis" value={synopsis} onChange={(e) => setSynopsis(e.target.value)} required />
+
+        <div className="flex gap-2 items-stretch">
+          <input className="w-full border p-3 rounded" placeholder="Poster URL" value={poster} onChange={(e) => setPoster(e.target.value)} />
+
+          <label className="shrink-0 bg-green-700 hover:bg-green-600 text-white px-4 py-3 rounded cursor-pointer font-semibold">
+            Upload
+            <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+          </label>
+        </div>
+
+        {poster && (
+          <img
+            src={poster}
+            alt="Poster preview"
+            className="w-32 h-44 object-contain rounded border border-gray-300 mx-auto"
+          />
+        )}
 
         <input className="w-full border p-3 rounded" placeholder="Cast (comma separated)" value={castInput} onChange={(e) => setCastInput(e.target.value)} />
 
